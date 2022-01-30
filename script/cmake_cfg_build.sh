@@ -1,6 +1,6 @@
 #!/bin/bash
 source ./public_config.sh
-pushd .. >> /dev/null
+pushd ${cmake_source_dir} >> /dev/null
 
 function CreateFolder()
 {
@@ -10,10 +10,10 @@ function CreateFolder()
     mkdir ${1}
 }
 
-CreateFolder ${executable_output_path}
-CreateFolder ${buildcache_path}
+CreateFolder ${cmake_source_dir}/${executable_output_path}
+CreateFolder ${cmake_source_dir}/${buildcache_path}
 
-cmake -S . -B ${buildcache_path} -G "MinGW Makefiles"
+cmake -S ${cmake_source_dir} -B ${cmake_source_dir}/${buildcache_path} -G "MinGW Makefiles"
 
 popd >> /dev/null
 ./cmake_build.sh

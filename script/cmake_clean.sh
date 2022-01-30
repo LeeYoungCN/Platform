@@ -1,6 +1,6 @@
 #!/bin/bash
 source ./public_config.sh
-pushd .. >> /dev/null
+pushd ${cmake_source_dir} >> /dev/null
 function CreateFolder()
 {
     if [ -e ${1} ];then

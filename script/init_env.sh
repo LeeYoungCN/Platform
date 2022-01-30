@@ -1,7 +1,8 @@
 #!/bin/bash
 echo "Start init enviriment!"
-script_path=$(pwd)
-cd ..
+platform_script_path=$(pwd)
+
+cd ../..
 file_name=public_config.sh
 target_name="${1}"
 
@@ -108,6 +109,6 @@ get_library_output_path
 get_buildcache_path
 set_exe_path_in_launch
 
-mv ${file_name} ${script_path}
+mv ${file_name} ${platform_script_path}
 
 echo "Init enviriment success!"
