@@ -22,12 +22,46 @@ function copy_all_file()
     done
 }
 
-if [ -d Platform ]; then
-    rm -rf Platform
-fi
+function backup_file()
+{
+    file="${1}"
+    echo ${file}
+    if [ -d ${file} ]; then
+        mv -f "${file}" "${file}_backup"
+    fi
+}
 
-git clone git@github.com:LeeYoungCN/Platform.git
+function reset_from_backup()
+{
+    file="${1}"
+    if [ -d "${file}_backup" ]; then
+        mv -f "${file}_backup" "${file}"
+    fi
+}
 
+function delete_backup()
+{
+    file="${1}"
+    if [ -d "${file}_backup" ]; then
+        rm -rf "${file}_backup"
+    fi
+}
+
+function git_clone_repository()
+{
+    ssh_path="${1}"
+    repository=${ssh_path#*/}
+    repository=${repository%*.git}
+    backup_file "${repository}"
+    git clone "${ssh_path}"
+    if [ $? -ne 0 ]; then
+        reset_from_backup "${repository}"
+        exit
+    fi
+    delete_backup "${repository}"
+}
+
+git_clone_repository "git@github.com:LeeYoungCN/Platform.git"
 root=$(pwd)
 platform_path=$(cd Platform;pwd)
 template_path="${platform_path}/template"
