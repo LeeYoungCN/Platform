@@ -1,2 +1,3 @@
 build/public_config.sh
 .vscode/*
+lib/*
