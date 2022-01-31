@@ -20,6 +20,7 @@ if [ ${#target_name} -gt 0 ]; then
     cmake_config
 elif [ $# -gt 0 ]; then
     for target in $*; do
+        set_exe_path_in_launch ${target}
         cmake_config "-DTARGET_NAME=${target}"
     done
 else
