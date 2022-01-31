@@ -14,8 +14,8 @@ if [ ! -d ${root}/.vscode ]; then
     mkdir -p ${root}/.vscode
 fi
 
-if [ ! -e ${root}/.vscode/task.json ];then
-    cp -rf ${platform_path}/template/task.json ${root}/.vscode/
+if [ ! -e ${root}/.vscode/tasks.json ];then
+    cp -rf ${platform_path}/template/tasks.json ${root}/.vscode/
 fi
 
 if [ ! -e ${root}/CMakeLists.txt ];then
