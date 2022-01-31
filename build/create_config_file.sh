@@ -7,6 +7,7 @@ file_name=public_config.sh
 # 写入public_config.sh 文件
 function write_to_file()
 {
+    echo ${1}
     echo ${1} >> ${file_name}
 }
 
