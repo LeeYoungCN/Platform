@@ -2,7 +2,6 @@
 source ./public_shell_func.sh
 platform_script_path=$(pwd)
 
-#cd ../..
 file_name=public_config.sh
 
 # 写入public_config.sh 文件

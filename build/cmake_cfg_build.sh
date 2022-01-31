@@ -1,23 +1,30 @@
 #!/bin/bash
 source ./public_config.sh
-pushd ${cmake_source_dir} >> /dev/null
+source ./public_shell_func.sh
 
-function CreateFolder()
+cmake_cmd="cmake -S ${cmake_source_dir} -B ${cmake_source_dir}/${buildcache_path}"
+
+function cmake_config()
 {
-    if [ -e ${1} ];then
-        rm -rf ${1}
+    if [ "${os}" == "Windows" ]; then
+        ${cmake_cmd} -G "MinGW Makefiles" ${1}
+    else
+        ${cmake_cmd} ${1}
     fi
-    mkdir ${1}
 }
 
-CreateFolder ${cmake_source_dir}/${executable_output_path}
-CreateFolder ${cmake_source_dir}/${buildcache_path}
+create_new_folder_and_del_old ${cmake_source_dir}/${executable_output_path}
+create_new_folder_and_del_old ${cmake_source_dir}/${buildcache_path}
 
-if [ "${os}" == "Windows" ]; then
-    cmake -S ${cmake_source_dir} -B ${cmake_source_dir}/${buildcache_path} -G "MinGW Makefiles"
+if [ ${#target_name} -gt 0 ]; then
+    cmake_config
+elif [ $# -gt 0 ]; then
+    for target in $*; do
+        cmake_config "-DTARGET_NAME=${target}"
+    done
 else
-    cmake -S ${cmake_source_dir} -B ${cmake_source_dir}/${buildcache_path}
+    echo "no target_name!"
+    exit
 fi
 
-popd >> /dev/null
 ./cmake_build.sh
