@@ -57,7 +57,19 @@
             },
             "command": "./init_env.sh",
             "args": ["${workspaceFolder}"],
-            "detail": "运行程序",
+            "detail": "初始化开发环境",
+            "problemMatcher": [
+                "$gcc"
+            ],
+        },
+        {
+            "label": "Download Platform",
+            "options": {
+                "cwd": "${workspaceFolder}/Platform/template/"
+            },
+            "command": "./download_Platform.sh",
+            "args": [],
+            "detail": "下载依赖",
             "problemMatcher": [
                 "$gcc"
             ],
