@@ -1,19 +1,9 @@
 #!/bin/bash
-echo "Start init enviriment!"
+source ./public_shell_func.sh
 platform_script_path=$(pwd)
 
-cd ../..
+#cd ../..
 file_name=public_config.sh
-target_name="${1}"
-
-# 创建文件
-function create_file()
-{
-    if [ -e ${1} ];then
-        rm -rf ${1}
-    fi
-    touch ${1}
-}
 
 # 写入public_config.sh 文件
 function write_to_file()
@@ -24,7 +14,7 @@ function write_to_file()
 # 获取CMakeList，TXT所在路径
 function get_cmake_source_dir()
 {
-    cmake_source_dir=$(pwd)
+    cmake_source_dir=$(cd ../..;pwd)
     write_to_file "cmake_source_dir=${cmake_source_dir}"
 }
 
@@ -32,7 +22,7 @@ function get_cmake_source_dir()
 function get_set_info_by_keyword()
 {
     key_word="$1"
-    target_line=$(cat CMakeLists.txt | grep "set(${key_word}.*)")
+    target_line=$(cat ${cmake_source_dir}/CMakeLists.txt | grep "set(${key_word}.*)")
     echo $target_line
 }
 
@@ -86,29 +76,26 @@ function get_buildcache_path()
     write_to_file "buildcache_path=${buildcache_path}"
 }
 
-# 刷新launch.json可执行文件的路径
-function set_exe_path_in_launch()
+function get_os_type
 {
-    pushd ${cmake_source_dir}/.vscode >> /dev/null
-    key="\"program\""
-    value="${executable_output_path}/${target_name}.exe"
-    old_line=$(cat launch.json | grep "${key}.*")
-    old_line=${old_line##*\{workspaceFolder\}\/}
-    old_line=${old_line%%\",*}
-    command="s#${old_line}#${value}#g"
-    sed -i ${command} launch.json
-    popd >> /dev/null
+    os=$(uname -a|awk '{print $1}')
+    os=${os%_*}
+    if [[ ${os} == "MINGW"* ]]; then
+        os="Windows"
+    elif [[ ${os} == "Linux"* ]];then
+        os="Linux"
+    else
+        echo "Error"
+        return 1
+    fi
+    write_to_file "os=${os}"
 }
 
-create_file ${file_name}
+create_new_file_and_del_old ${file_name}
+get_os_type
 get_cmake_source_dir
 get_target_name
 get_lib_name
 get_executable_output_path
 get_library_output_path
 get_buildcache_path
-set_exe_path_in_launch
-
-mv ${file_name} ${platform_script_path}
-
-echo "Init enviriment success!"

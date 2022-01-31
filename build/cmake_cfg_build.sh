@@ -13,7 +13,11 @@ function CreateFolder()
 CreateFolder ${cmake_source_dir}/${executable_output_path}
 CreateFolder ${cmake_source_dir}/${buildcache_path}
 
-cmake -S ${cmake_source_dir} -B ${cmake_source_dir}/${buildcache_path} -G "MinGW Makefiles"
+if [ "${os}" == "Windows" ]; then
+    cmake -S ${cmake_source_dir} -B ${cmake_source_dir}/${buildcache_path} -G "MinGW Makefiles"
+else
+    cmake -S ${cmake_source_dir} -B ${cmake_source_dir}/${buildcache_path}
+fi
 
 popd >> /dev/null
 ./cmake_build.sh

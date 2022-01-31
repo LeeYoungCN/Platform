@@ -1,0 +1,1 @@
+set(OS Linux)

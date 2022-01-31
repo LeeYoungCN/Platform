@@ -1,0 +1,7 @@
+os=Windows
+cmake_source_dir=/e/GitHub/PlatformCode
+target_name=TestPlatform
+lib_name=libPlatform_v001
+executable_output_path=output
+library_output_path=lib
+buildcache_path=buildcache
