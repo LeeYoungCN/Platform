@@ -10,4 +10,9 @@
 #define VOID void
 #define CHAR char
 
+enum BOOLEAN : bool {
+    TRUE = true,
+    FALSE = false
+};
+
 #endif // PUBLIC_TYPEDEF_H
