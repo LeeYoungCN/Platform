@@ -13,7 +13,6 @@ function cmake_config()
     fi
 }
 
-create_new_folder_and_del_old ${cmake_source_dir}/${executable_output_path}
 create_new_folder_and_del_old ${cmake_source_dir}/${buildcache_path}
 
 if [ ${#target_name} -gt 0 ]; then

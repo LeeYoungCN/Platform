@@ -11,7 +11,7 @@ function write_to_file()
     echo ${1} >> ${file_name}
 }
 
-# 获取CMakeList，TXT所在路径
+# 获取CMakeList.txt所在路径
 function get_cmake_source_dir()
 {
     cmake_source_dir=$(cd ../..;pwd)
@@ -35,7 +35,7 @@ function get_target_name()
     write_to_file "target_name=${target_name}"
 }
 
-# 获取TARGET_NAME
+# 获取LIB_NAME
 function get_lib_name()
 {
     lib_name_line=$(get_set_info_by_keyword "LIB_NAME")
@@ -44,7 +44,7 @@ function get_lib_name()
     write_to_file "lib_name=lib${lib_name}"
 }
 
-# 获取路径设置
+# 提取路径
 function get_path()
 {
     line="${1}"
@@ -61,6 +61,7 @@ function get_executable_output_path()
     write_to_file "executable_output_path=${executable_output_path}"
 }
 
+# 获取库文件的生成路径
 function get_library_output_path()
 {
     library_output_path_line=$(get_set_info_by_keyword "LIBRARY_OUTPUT_PATH")
@@ -68,7 +69,7 @@ function get_library_output_path()
     write_to_file "library_output_path=${library_output_path}"
 }
 
-# 获取CMake中间件的生成路劲
+# 获取CMake中间件的生成路径
 function get_buildcache_path()
 {
     buildcache_line=$(get_set_info_by_keyword "BUILDCACHE_PATH")
@@ -76,6 +77,7 @@ function get_buildcache_path()
     write_to_file "buildcache_path=${buildcache_path}"
 }
 
+# 获取操作系统类型
 function get_os_type
 {
     os=$(uname -a|awk '{print $1}')
