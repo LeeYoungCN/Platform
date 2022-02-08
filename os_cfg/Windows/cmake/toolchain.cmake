@@ -1,3 +1,4 @@
+set(OS Windows)
 set(MINGW_PATH "D:/Program Files/mingw64")
 
 set(CMAKE_C_COMPLIER ${MINGW_PATH}/bin/gcc.exe)
