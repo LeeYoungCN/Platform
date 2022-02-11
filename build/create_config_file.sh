@@ -80,12 +80,14 @@ function get_buildcache_path()
 # 获取操作系统类型
 function get_os_type
 {
-    os=$(uname -a|awk '{print $1}')
+    os=$(uname -s)
     os=${os%_*}
     if [[ ${os} == "MINGW"* ]]; then
         os="Windows"
-    elif [[ ${os} == "Linux"* ]];then
+    elif [[ ${os} == "Linux"* ]]; then
         os="Linux"
+    elif [[ ${os} == "Darwin"* ]]; then
+        os="MacOS"
     else
         echo "Error"
         return 1
