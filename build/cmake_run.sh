@@ -1,7 +1,7 @@
 #!/bin/bash
 source ./public_config.sh
-./cmake_build.sh
+./cmake_build.sh "all"
 
 pushd ${cmake_source_dir}/${executable_output_path} >> /dev/null
 
-./${target_name}* ${1} ${2}
+./${target_name}* ${*}

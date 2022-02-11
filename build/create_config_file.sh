@@ -89,10 +89,11 @@ function get_os_type
     elif [[ ${os} == "Darwin"* ]]; then
         os="MacOS"
     else
-        echo "Error"
+        result_log 1 "get os"
         return 1
     fi
     write_to_file "os=${os}"
+    return 0
 }
 
 create_new_file_and_del_old ${file_name}
@@ -103,3 +104,4 @@ get_lib_name
 get_executable_output_path
 get_library_output_path
 get_buildcache_path
+result_log 0 "create config file"

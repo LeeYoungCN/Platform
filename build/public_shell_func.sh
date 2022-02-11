@@ -1,4 +1,18 @@
 #!/bin/bash
+function print_log()
+{
+    d=$(date "+%Y-%m-%d %H:%M:%S")
+    echo "${d} ${1}"
+}
+
+function result_log()
+{
+    if [ $1 -eq 0 ]; then
+        print_log "$2 success!"
+    else
+        print_log "$2 fail!"
+    fi
+}
 
 function create_new_file()
 {
@@ -9,7 +23,7 @@ function create_new_file()
 function create_new_file_if_not_exist()
 {
     if [ ! -e ${1} ]; then
-       return
+       return 1
     fi
 
     create_new_file ${1}
@@ -49,6 +63,11 @@ function set_exe_path_in_launch()
     old_line=${old_line##*\{workspaceFolder\}\/}
     old_line=${old_line%%\",*}
     command="s#${old_line}#${value}#g"
-    sed -i ${command} launch.json
+
+    if [ "$(uname -s)" == "Darwin" ]; then
+        sed -i "" ${command} launch.json
+    else
+        sed -i ${command} launch.json
+    fi
     popd >> /dev/null
 }

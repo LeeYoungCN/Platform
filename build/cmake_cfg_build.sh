@@ -17,14 +17,14 @@ create_new_folder_and_del_old ${cmake_source_dir}/${buildcache_path}
 
 if [ ${#target_name} -gt 0 ]; then
     cmake_config
+    ./cmake_build.sh ${target_name}
 elif [ $# -gt 0 ]; then
     for target in $*; do
         set_exe_path_in_launch ${target}
         cmake_config "-DTARGET_NAME=${target}"
+        ./cmake_build.sh ${target_name}
     done
 else
     echo "no target_name!"
     exit
 fi
-
-./cmake_build.sh
