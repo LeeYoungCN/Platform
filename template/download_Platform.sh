@@ -2,7 +2,7 @@
 function print_log()
 {
     d=$(date "+%Y-%m-%d %H:%M:%S")
-    echo "${d}: ${1}"
+    echo "${d} === ${1}"
 }
 
 function result_log()
@@ -64,11 +64,11 @@ function git_clone_repository()
     log_str="git clone ${ssh_path}"
     git clone "${ssh_path}"
     if [ $? -ne 0 ]; then
-        result_log 1 ${log_str}
+        result_log 1 "${log_str}"
         reset_from_backup "${repository}"
         return 1
     fi
-    result_log 0 ${log_str}
+    result_log 0 "${log_str}"
     delete_backup "${repository}"
     return 0
 }
@@ -88,13 +88,13 @@ function unzip_file()
 
     unzip -o ${zip_file} >> /dev/null
     if [ $? -eq 0 ]; then
-        result_log 0 ${log_str}
+        result_log 0 "${log_str}"
         mv -f ${zip_file%%.zip} ${unzip_file}
         chmod -R 700 ${unzip_file}
         delete_backup ${unzip_file}
         return 0
     fi
-    result_log 1 ${log_str}
+    result_log 1 "${log_str}"
     reset_from_backup ${unzip_file}
     return 1
 }
@@ -112,6 +112,10 @@ function get_platform()
         return 0
     fi
     unzip_file ${zip_file} ${unzip_folder}
+    if [ $? -ne 0 -a ! -e ${repository} ]; then
+        return 1
+    fi
+    return 0
 }
 
 get_platform "git@github.com:LeeYoungCN/Platform.git"
