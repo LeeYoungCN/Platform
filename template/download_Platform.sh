@@ -2,7 +2,7 @@
 function print_log()
 {
     d=$(date "+%Y-%m-%d %H:%M:%S")
-    echo "${d} === ${1}"
+    echo "${d} ${1}"
 }
 
 function result_log()
@@ -33,7 +33,6 @@ function copy_all_file()
 function backup_file()
 {
     file="${1}"
-    echo ${file}
     if [ -d ${file} ]; then
         mv -f "${file}" "${file}_backup"
     fi
@@ -89,9 +88,9 @@ function unzip_file()
     unzip -o ${zip_file} >> /dev/null
     if [ $? -eq 0 ]; then
         result_log 0 "${log_str}"
-        mv -f ${zip_file%%.zip} ${unzip_file}
-        chmod -R 700 ${unzip_file}
-        delete_backup ${unzip_file}
+        mv -f "${zip_file%%.zip}" "${unzip_file}"
+        chmod -R 700 "${unzip_file}"
+        delete_backup "${unzip_file}"
         return 0
     fi
     result_log 1 "${log_str}"
@@ -111,7 +110,7 @@ function get_platform()
     if [ $? -eq 0 ]; then
         return 0
     fi
-    unzip_file ${zip_file} ${unzip_folder}
+    unzip_file ${zip_file} ${repository}
     if [ $? -ne 0 -a ! -e ${repository} ]; then
         return 1
     fi
