@@ -2,7 +2,7 @@
 function print_log()
 {
     d=$(date "+%Y-%m-%d %H:%M:%S")
-    echo "${d} ${1}"
+    echo "${d}: ${1}"
 }
 
 function result_log()
