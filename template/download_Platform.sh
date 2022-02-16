@@ -33,6 +33,7 @@ function result_log()
         print_log "$2 fail!"
     fi
 }
+
 function copy_tmplate_file()
 {
     file_name="${1}"
