@@ -1,4 +1,24 @@
 #!/bin/bash
+
+git_ssh=""
+git_user=""
+git_repository=""
+git_branch=""
+git_zip=""
+git_zip_link=""
+
+function get_git_info()
+{
+    git_ssh="${1}"
+    git_branch="${2}"
+    git_user=${git_ssh#git@github.com:}
+    git_user=${git_user%/*}
+    git_repository=${git_ssh#*/}
+    git_repository=${git_repository%*.git}
+    git_zip="${git_repository}-${git_branch}.zip"
+    git_zip_link="https://github.com/${git_user}/${git_repository}/archive/refs/heads/${git_branch}.zip"
+}
+
 function print_log()
 {
     d=$(date "+%Y-%m-%d %H:%M:%S")
@@ -13,7 +33,6 @@ function result_log()
         print_log "$2 fail!"
     fi
 }
-
 function copy_tmplate_file()
 {
     file_name="${1}"
@@ -34,7 +53,7 @@ function copy_all_file()
 function backup_file()
 {
     file="${1}"
-    if [ -d ${file} ]; then
+    if [ -e ${file} ]; then
         mv -f "${file}" "${file}_backup"
     fi
 }
@@ -42,7 +61,7 @@ function backup_file()
 function reset_from_backup()
 {
     file="${1}"
-    if [ -d "${file}_backup" ]; then
+    if [ -e "${file}_backup" ]; then
         mv -f "${file}_backup" "${file}"
     fi
 }
@@ -50,7 +69,7 @@ function reset_from_backup()
 function delete_backup()
 {
     file="${1}"
-    if [ -d "${file}_backup" ]; then
+    if [ -e "${file}_backup" ]; then
         rm -rf "${file}_backup"
     fi
 }
@@ -58,6 +77,7 @@ function delete_backup()
 function git_clone_repository()
 {
     ssh_path="${1}"
+    branch=${2}
     repository=${ssh_path#*/}
     repository=${repository%*.git}
     backup_file "${repository}"
@@ -68,6 +88,10 @@ function git_clone_repository()
         reset_from_backup "${repository}"
         return 1
     fi
+    chmod -R 700 ${repository}
+    pushd ./${repository}
+    git checkout ${branch}
+    popd
     result_log 0 "${log_str}"
     delete_backup "${repository}"
     return 0
@@ -99,26 +123,42 @@ function unzip_file()
     return 1
 }
 
+function download_file()
+{
+    link="$1"
+    target="$2"
+    log_str="download ${target}"
+    if [ -e ${target} ]; then
+        backup_file ${target}
+    fi
+    wget -O ${target} ${link}
+    if [ $? -ne 0 ]; then
+        result_log 1 "${log_str}"
+        rm -rm ${target}
+        reset_from_backup ${target}
+        return 1
+    fi
+    result_log 0 "${log_str}"
+    delete_backup ${target}
+    return 0
+}
+
 function get_platform()
 {
-    ssh_path="${1}"
-    repository=${ssh_path#*/}
-    repository=${repository%*.git}
-    unzip_folder="${repository}-master"
-    zip_file="${unzip_folder}.zip"
-    
-    git_clone_repository "${ssh_path}"
+    get_git_info "git@github.com:LeeYoungCN/Platform.git" "master"
+    git_clone_repository "${git_ssh}" "${git_branch}"
     if [ $? -eq 0 ]; then
         return 0
     fi
-    unzip_file ${zip_file} ${repository}
-    if [ $? -ne 0 -a ! -e ${repository} ]; then
-        return 1
+    download_file ${git_zip_link} ${git_zip}
+    unzip_file "${git_zip}" "${git_repository}"
+    if [ $? -ne 0 ] && [ ! -e ${repository} ]; then
+        exit
     fi
     return 0
 }
 
-get_platform "git@github.com:LeeYoungCN/Platform.git"
+get_platform
 root=$(pwd)
 platform_path=$(cd Platform;pwd)
 template_path="${platform_path}/template"
