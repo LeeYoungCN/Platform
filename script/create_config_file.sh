@@ -2,19 +2,14 @@
 source ./public_shell_func.sh
 platform_script_path=$(pwd)
 
-source_path="../.."
-save_path="./"
+source_path=$(cd ../..; pwd)
+save_path=$(platform_script_path)
 
 file_name=public_config.sh
 
 if [ $# -ge 2 ]; then
-    pushd "$1"
-    source_path=$(pwd)
-    popd
-    pushd "$2"
-    save_path=$(pwd)
-    popd
-    echo "save_path ${save_path}"
+    source_path=$(cd $1;pwd)
+    save_path=$(cd $2;pwd)
 fi
 
 # 写入public_config.sh 文件
@@ -27,8 +22,7 @@ function write_to_file()
 # 获取CMakeList.txt所在路径
 function get_cmake_source_dir()
 {
-    cmake_source_dir=$(pwd)
-    write_to_file "cmake_source_dir=${cmake_source_dir}"
+    write_to_file "cmake_source_dir=${source_path}"
 }
 
 # 根据关键字获取 CMakeLists.txt 设置项
@@ -108,7 +102,7 @@ function get_os_type
     write_to_file "os=${os}"
     return 0
 }
-pushd ${source_path}
+
 create_new_file_and_del_old ${save_path}/${file_name}
 get_os_type
 get_cmake_source_dir
