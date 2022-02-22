@@ -1,7 +1,7 @@
 os=Windows
-cmake_source_dir=/e/GitHub/LeetCode
-target_name=LeetCodePractice
+cmake_source_dir=/e/GitHub/LeetCode/Platform/script
+target_name=
 lib_name=lib
-executable_output_path=bin
-library_output_path=lib
-buildcache_path=buildcache
+executable_output_path=
+library_output_path=
+buildcache_path=

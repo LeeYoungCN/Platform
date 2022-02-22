@@ -186,7 +186,11 @@ function get_platform()
     return 0
 }
 
-cd ..
+if [ $# -gt 0 ]; then
+    if [ -d $1 ]; then
+        pushd $1
+    fi
+fi
 
 get_platform
 if [ $? -ne 0 ]; then
