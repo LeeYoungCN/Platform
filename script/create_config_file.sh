@@ -2,8 +2,8 @@
 source ./public_shell_func.sh
 platform_script_path=$(pwd)
 
-source_path=$(cd ../..; pwd)
-save_path=$(platform_script_path)
+source_path=$(cd ../.. && pwd)
+save_path=${platform_script_path}
 
 file_name=public_config.sh
 
@@ -29,7 +29,7 @@ function get_cmake_source_dir()
 function get_set_info_by_keyword()
 {
     key_word="$1"
-    target_line=$(cat ${cmake_source_dir}/CMakeLists.txt | grep "set(${key_word}.*)")
+    target_line=$(cat ${source_path}/CMakeLists.txt | grep "set(${key_word}.*)")
     echo $target_line
 }
 
