@@ -198,8 +198,9 @@ fi
 
 get_platform
 if [ $? -ne 0 ]; then
-    return 1
+    exit
 fi
+
 root=$(pwd)
 platform_path=$(cd Platform;pwd)
 template_path="${platform_path}/template"
