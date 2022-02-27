@@ -25,6 +25,13 @@ function get_cmake_source_dir()
     write_to_file "cmake_source_dir=${source_path}"
 }
 
+# 获取Platform所在路径
+function get_platform_dir()
+{
+    platform_dir=$(cd ${platform_script_path}/../ && pwd)
+    write_to_file "platform_dir=${platform_dir}"
+}
+
 # 根据关键字获取 CMakeLists.txt 设置项
 function get_set_info_by_keyword()
 {
@@ -106,6 +113,7 @@ function get_os_type
 create_new_file_and_del_old ${save_path}/${file_name}
 get_os_type
 get_cmake_source_dir
+get_platform_dir
 get_target_name
 get_lib_name
 get_executable_output_path
