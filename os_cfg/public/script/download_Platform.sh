@@ -211,6 +211,10 @@ fi
 
 copy_all_file ${template_path}
 
-cd ${platform_path}/script
+if [ -e ${root}/script/init_env.sh ]; then
+    cd ${root}/script
+else
+    cd ${platform_path}/script
+fi
+
 ./init_env.sh
-cd ${root}
