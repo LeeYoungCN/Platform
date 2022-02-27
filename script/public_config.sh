@@ -1,5 +1,6 @@
 os=Windows
 cmake_source_dir=/e/GitHub/MiniProject
+platform_dir=/e/GitHub/MiniProject/Platform
 target_name=Excutable
 lib_name=lib
 executable_output_path=bin
